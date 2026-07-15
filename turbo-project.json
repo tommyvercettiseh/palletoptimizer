@@ -6,5 +6,5 @@
   "preview": "docs/preview-mobile.svg",
   "start_command": "Start Pallet Insight.bat",
   "default_port": 8000,
-  "health_url": "http://127.0.0.1:8000/health"
+  "health_url": "http://127.0.0.1:8000/api/health"
 }
