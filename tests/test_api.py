@@ -19,10 +19,16 @@ def test_homepage_loads_modern_custom_pallet_interface():
     assert 'data-pallet-mode="custom"' in response.text
     assert 'id="custom_pallet_length_mm"' in response.text
     assert 'id="downloadResult"' in response.text
+    assert 'id="heightAdvice"' in response.text
+    assert 'id="heightAdviceText"' in response.text
     assert 'id="boxesPerLayer"' in response.text
-    assert "downloadResult" in javascript.text
+    assert "downloadFilename" in javascript.text
+    assert "box_${length}x${width}x${height}mm_maxheight_${maximumHeight}mm.png" in javascript.text
+    assert "Lower box height by" in javascript.text
+    assert "numberFormat.format(data.load_height_mm)" not in javascript.text
     assert "custom_pallet_length_mm" in javascript.text
     assert ".metric-icon svg" in stylesheet.text
+    assert ".advice-card" in stylesheet.text
 
 
 def test_calculation_api_returns_expected_capacity():
@@ -36,6 +42,7 @@ def test_calculation_api_returns_expected_capacity():
     assert data["layers"] == 6
     assert data["boxes_per_pallet"] == 48
     assert data["load_height_mm"] == 1644
+    assert data["advice"]["minimum_reduction_for_gain"]["reduction_mm"] == 14
 
 
 def test_custom_pallet_dimensions_are_used():
@@ -70,4 +77,4 @@ def test_simple_api_request_uses_exact_tetris():
 def test_health_uses_repository_version():
     response = client.get("/api/health")
     assert response.status_code == 200
-    assert response.json() == {"status": "ok", "version": "0.9.0"}
+    assert response.json() == {"status": "ok", "version": "0.9.1"}
