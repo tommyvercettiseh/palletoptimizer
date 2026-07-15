@@ -14,11 +14,13 @@ from app.services.optimizer import (
 )
 
 BASE_DIR = Path(__file__).resolve().parent
+VERSION_FILE = BASE_DIR.parent / "VERSION"
+APP_VERSION = VERSION_FILE.read_text(encoding="utf-8").strip()
 
 app = FastAPI(
     title="Pallet Insight",
     description="Lokale pallet- en verpakkingsoptimalisatie met 3D-preview.",
-    version="0.4.0",
+    version=APP_VERSION,
 )
 app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
 templates = Jinja2Templates(directory=BASE_DIR / "templates")
@@ -49,7 +51,7 @@ def index(request: Request) -> HTMLResponse:
 
 @app.get("/api/health")
 def health() -> dict[str, str]:
-    return {"status": "ok", "version": "0.4.0"}
+    return {"status": "ok", "version": APP_VERSION}
 
 
 @app.get("/api/pallets")
