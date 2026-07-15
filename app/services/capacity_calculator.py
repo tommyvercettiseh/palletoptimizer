@@ -80,11 +80,11 @@ def calculate_capacity(data: CalculationInput) -> dict[str, Any]:
     annual_transport_cost_eur = annual_pallets * data.cost_per_pallet_eur
     cost_per_1000_boxes_eur = annual_transport_cost_eur / data.annual_box_volume * 1000 if data.annual_box_volume > 0 else 0
     if boxes_per_layer == 0:
-        limiting_factor = "box does not fit"
+        limiting_factor = "doos past niet"
     elif layers_by_weight != inf and layers_by_weight < layers_by_height:
-        limiting_factor = "weight"
+        limiting_factor = "gewicht"
     else:
-        limiting_factor = "height"
+        limiting_factor = "hoogte"
     orientation_counts = {
         "lengthwise": sum(not item.rotated for item in layer.placements),
         "crosswise": sum(item.rotated for item in layer.placements),
