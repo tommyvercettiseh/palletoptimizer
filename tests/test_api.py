@@ -13,6 +13,18 @@ def test_homepage_loads():
     assert "palletCanvas" in response.text
 
 
+def test_homepage_uses_responsive_workspace():
+    response = client.get("/")
+    stylesheet = client.get("/static/style.css")
+
+    assert response.status_code == 200
+    assert stylesheet.status_code == 200
+    assert 'class="page-shell workspace-shell"' in response.text
+    assert 'id="resultCard"' in response.text
+    assert "grid-template-columns: minmax(320px, 380px) minmax(0, 1fr)" in stylesheet.text
+    assert "@media (max-width: 999px)" in stylesheet.text
+
+
 def test_calculation_api_returns_advice():
     response = client.post(
         "/api/calculate",

@@ -1,8 +1,10 @@
 # Pallet Insight
 
-![Desktoppreview](docs/preview-desktop.svg)
+![Responsive preview](docs/previews/latest.svg)
 
 Lokale Python-webapp die de maximale laagindeling voor gelijke dozen op een pallet zoekt. Iedere doos mag afzonderlijk 90 graden draaien. Daardoor ondersteunt de optimizer ook vrije Tetris-patronen met kleine ongebruikte ruimtes midden in de laag.
+
+Op desktop staat de invoer links en het volledige resultaat rechts op één werkvlak. Op tablet en mobiel blijven invoer en resultaat overzichtelijk onder elkaar staan.
 
 ## Starten op Windows
 

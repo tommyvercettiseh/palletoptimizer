@@ -1,0 +1,160 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <linearGradient id="header" x1="0" x2="1">
+      <stop offset="0" stop-color="#1e5be4"/>
+      <stop offset="1" stop-color="#2f6ef0"/>
+    </linearGradient>
+    <linearGradient id="page" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#f6f8fc"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#0f172a" flood-opacity="0.10"/>
+    </filter>
+    <g id="carton">
+      <polygon points="0,22 38,0 76,22 38,44" fill="#efbf7d" stroke="#7c4b22" stroke-width="1.4"/>
+      <polygon points="0,22 38,44 38,88 0,66" fill="#b87538" stroke="#7c4b22" stroke-width="1.4"/>
+      <polygon points="38,44 76,22 76,66 38,88" fill="#d7944d" stroke="#7c4b22" stroke-width="1.4"/>
+      <polygon points="33,3 43,3 81,25 71,28" fill="#dca45d" opacity="0.7" transform="translate(-3 0)"/>
+      <line x1="38" y1="0" x2="38" y2="44" stroke="#9a5d28" stroke-width="1.2"/>
+    </g>
+  </defs>
+
+  <rect width="1600" height="900" fill="#eef3f9"/>
+  <text x="52" y="52" font-family="Segoe UI,Arial" font-size="29" font-weight="750" fill="#0f172a">Pallet Insight · desktop links invoer, rechts resultaat</text>
+  <text x="52" y="82" font-family="Segoe UI,Arial" font-size="15" fill="#64748b">Responsive versie 0.5.0 met mobiele stap-voor-stap indeling</text>
+
+  <g filter="url(#shadow)">
+    <rect x="44" y="112" width="1240" height="742" rx="24" fill="url(#page)" stroke="#cbd5e1"/>
+    <rect x="44" y="112" width="1240" height="68" rx="24" fill="url(#header)"/>
+    <rect x="44" y="150" width="1240" height="30" fill="url(#header)"/>
+    <text x="79" y="155" font-family="Segoe UI,Arial" font-size="25" font-weight="750" fill="white">▣ Pallet Insight</text>
+    <rect x="1117" y="132" width="128" height="30" rx="15" fill="#ffffff" fill-opacity="0.15" stroke="#ffffff" stroke-opacity="0.28"/>
+    <circle cx="1136" cy="147" r="5" fill="#86efac"/>
+    <text x="1149" y="152" font-family="Segoe UI,Arial" font-size="11" font-weight="700" fill="white">Lokaal actief</text>
+
+    <rect x="72" y="207" width="348" height="610" rx="18" fill="white" stroke="#dbe3ef"/>
+    <circle cx="103" cy="242" r="17" fill="#2563eb"/>
+    <text x="98" y="248" font-family="Arial" font-size="16" font-weight="700" fill="white">1</text>
+    <text x="132" y="243" font-family="Segoe UI,Arial" font-size="22" font-weight="750" fill="#0f172a">Doosmaat invoeren</text>
+    <text x="132" y="266" font-family="Segoe UI,Arial" font-size="12" fill="#64748b">Pallet en doosafmetingen</text>
+
+    <g font-family="Segoe UI,Arial">
+      <text x="96" y="309" font-size="12" font-weight="700" fill="#0f172a">Pallettype</text>
+      <rect x="96" y="322" width="300" height="48" rx="10" fill="white" stroke="#cbd5e1"/>
+      <text x="111" y="352" font-size="13" fill="#0f172a">Europallet 1200 × 800 × 144 mm</text>
+
+      <text x="96" y="401" font-size="12" font-weight="700" fill="#0f172a">Lengte (L)</text>
+      <rect x="96" y="414" width="300" height="48" rx="10" fill="white" stroke="#cbd5e1"/>
+      <text x="111" y="444" font-size="14" fill="#0f172a">400 mm</text>
+
+      <text x="96" y="493" font-size="12" font-weight="700" fill="#0f172a">Breedte (B)</text>
+      <rect x="96" y="506" width="300" height="48" rx="10" fill="white" stroke="#cbd5e1"/>
+      <text x="111" y="536" font-size="14" fill="#0f172a">300 mm</text>
+
+      <text x="96" y="585" font-size="12" font-weight="700" fill="#0f172a">Hoogte (H)</text>
+      <rect x="96" y="598" width="300" height="48" rx="10" fill="white" stroke="#cbd5e1"/>
+      <text x="111" y="628" font-size="14" fill="#0f172a">250 mm</text>
+
+      <text x="96" y="677" font-size="12" font-weight="700" fill="#0f172a">Maximale pallethoogte</text>
+      <rect x="96" y="690" width="300" height="48" rx="10" fill="white" stroke="#cbd5e1"/>
+      <text x="111" y="720" font-size="14" fill="#0f172a">1800 mm</text>
+
+      <rect x="96" y="759" width="300" height="44" rx="10" fill="#2563eb"/>
+      <text x="246" y="786" text-anchor="middle" font-size="12" font-weight="750" fill="white">BEREKEN OPTIMALE LAYOUT</text>
+    </g>
+
+    <rect x="444" y="207" width="812" height="610" rx="18" fill="white" stroke="#dbe3ef"/>
+    <circle cx="475" cy="242" r="17" fill="#2563eb"/>
+    <text x="470" y="248" font-family="Arial" font-size="16" font-weight="700" fill="white">2</text>
+    <text x="504" y="243" font-family="Segoe UI,Arial" font-size="22" font-weight="750" fill="#0f172a">Resultaat</text>
+    <text x="504" y="266" font-family="Segoe UI,Arial" font-size="12" fill="#64748b">Europallet · optimale laagverdeling</text>
+
+    <g font-family="Segoe UI,Arial" text-anchor="middle">
+      <rect x="468" y="292" width="176" height="72" rx="11" fill="white" stroke="#dbe3ef"/>
+      <text x="556" y="316" font-size="11" fill="#64748b">Dozen per laag</text><text x="556" y="349" font-size="27" font-weight="750" fill="#0f172a">8</text>
+      <rect x="655" y="292" width="176" height="72" rx="11" fill="white" stroke="#dbe3ef"/>
+      <text x="743" y="316" font-size="11" fill="#64748b">Aantal lagen</text><text x="743" y="349" font-size="27" font-weight="750" fill="#0f172a">6</text>
+      <rect x="842" y="292" width="176" height="72" rx="11" fill="white" stroke="#dbe3ef"/>
+      <text x="930" y="316" font-size="11" fill="#64748b">Totaal dozen</text><text x="930" y="349" font-size="27" font-weight="750" fill="#0f172a">48</text>
+      <rect x="1029" y="292" width="203" height="72" rx="11" fill="white" stroke="#dbe3ef"/>
+      <text x="1130" y="316" font-size="11" fill="#64748b">Pallethoogte</text><text x="1130" y="347" font-size="23" font-weight="750" fill="#0f172a">1.644 mm</text>
+    </g>
+
+    <rect x="468" y="384" width="764" height="310" rx="14" fill="#f8fafc" stroke="#dbe3ef"/>
+    <text x="490" y="414" font-family="Segoe UI,Arial" font-size="14" font-weight="750" fill="#0f172a">Volle dozen op pallet</text>
+    <text x="490" y="436" font-family="Segoe UI,Arial" font-size="11" fill="#64748b">6 normaal en 2 overdwars · vrije Tetris-indeling</text>
+    <rect x="1112" y="399" width="100" height="29" rx="15" fill="#eff6ff"/>
+    <text x="1162" y="418" text-anchor="middle" font-family="Segoe UI,Arial" font-size="10" font-weight="750" fill="#1d4ed8">96,0% benut</text>
+
+    <g transform="translate(695 555)">
+      <polygon points="-150,45 0,-35 175,45 25,120" fill="#dfb277" stroke="#8b5e34" stroke-width="2"/>
+      <polygon points="-150,45 25,120 25,142 -150,67" fill="#9b6536" stroke="#8b5e34"/>
+      <polygon points="25,120 175,45 175,67 25,142" fill="#bd8650" stroke="#8b5e34"/>
+      <g transform="translate(-103 -70) scale(.78)"><use href="#carton"/></g>
+      <g transform="translate(-40 -103) scale(.78)"><use href="#carton"/></g>
+      <g transform="translate(23 -136) scale(.78)"><use href="#carton"/></g>
+      <g transform="translate(-71 -122) scale(.78)"><use href="#carton"/></g>
+      <g transform="translate(-8 -155) scale(.78)"><use href="#carton"/></g>
+      <g transform="translate(55 -188) scale(.78)"><use href="#carton"/></g>
+      <g transform="translate(-39 -174) scale(.78)"><use href="#carton"/></g>
+      <g transform="translate(24 -207) scale(.78)"><use href="#carton"/></g>
+      <g transform="translate(87 -240) scale(.78)"><use href="#carton"/></g>
+    </g>
+
+    <rect x="468" y="713" width="366" height="78" rx="12" fill="white" stroke="#dbe3ef"/>
+    <text x="487" y="741" font-family="Segoe UI,Arial" font-size="13" font-weight="750" fill="#0f172a">Laagindeling</text>
+    <text x="487" y="765" font-family="Segoe UI,Arial" font-size="11" fill="#64748b">6 lengterichting · 2 overdwars</text>
+    <rect x="846" y="713" width="386" height="78" rx="12" fill="#f0fdf4" stroke="#bbf7d0"/>
+    <text x="866" y="741" font-family="Segoe UI,Arial" font-size="13" font-weight="750" fill="#14532d">Optimalisatieadvies</text>
+    <text x="866" y="765" font-family="Segoe UI,Arial" font-size="11" fill="#3f6212">14 mm lager geeft één extra laag</text>
+    <text x="1208" y="770" text-anchor="end" font-family="Segoe UI,Arial" font-size="17" font-weight="750" fill="#15803d">+8 dozen</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="1330" y="112" width="226" height="742" rx="34" fill="#111827"/>
+    <rect x="1338" y="120" width="210" height="726" rx="28" fill="#f6f8fc"/>
+    <rect x="1395" y="128" width="94" height="13" rx="7" fill="#111827"/>
+    <rect x="1338" y="151" width="210" height="54" fill="url(#header)"/>
+    <text x="1354" y="184" font-family="Segoe UI,Arial" font-size="15" font-weight="750" fill="white">▣ Pallet Insight</text>
+    <rect x="1349" y="220" width="188" height="272" rx="14" fill="white" stroke="#dbe3ef"/>
+    <circle cx="1372" cy="247" r="14" fill="#2563eb"/>
+    <text x="1368" y="252" font-family="Arial" font-size="12" font-weight="700" fill="white">1</text>
+    <text x="1394" y="251" font-family="Segoe UI,Arial" font-size="15" font-weight="750" fill="#0f172a">Doosmaat</text>
+    <rect x="1361" y="275" width="164" height="38" rx="8" fill="white" stroke="#cbd5e1"/>
+    <text x="1371" y="299" font-family="Segoe UI,Arial" font-size="9" fill="#0f172a">Europallet 1200 × 800</text>
+    <rect x="1361" y="326" width="48" height="38" rx="8" fill="white" stroke="#cbd5e1"/>
+    <rect x="1419" y="326" width="48" height="38" rx="8" fill="white" stroke="#cbd5e1"/>
+    <rect x="1477" y="326" width="48" height="38" rx="8" fill="white" stroke="#cbd5e1"/>
+    <text x="1385" y="350" text-anchor="middle" font-family="Segoe UI,Arial" font-size="8" fill="#0f172a">400</text>
+    <text x="1443" y="350" text-anchor="middle" font-family="Segoe UI,Arial" font-size="8" fill="#0f172a">300</text>
+    <text x="1501" y="350" text-anchor="middle" font-family="Segoe UI,Arial" font-size="8" fill="#0f172a">250</text>
+    <rect x="1361" y="377" width="164" height="38" rx="8" fill="white" stroke="#cbd5e1"/>
+    <text x="1371" y="401" font-family="Segoe UI,Arial" font-size="9" fill="#0f172a">Max hoogte 1800 mm</text>
+    <rect x="1361" y="430" width="164" height="40" rx="9" fill="#2563eb"/>
+    <text x="1443" y="455" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9" font-weight="750" fill="white">BEREKEN LAYOUT</text>
+
+    <rect x="1349" y="508" width="188" height="310" rx="14" fill="white" stroke="#dbe3ef"/>
+    <circle cx="1372" cy="535" r="14" fill="#2563eb"/>
+    <text x="1368" y="540" font-family="Arial" font-size="12" font-weight="700" fill="white">2</text>
+    <text x="1394" y="539" font-family="Segoe UI,Arial" font-size="15" font-weight="750" fill="#0f172a">Resultaat</text>
+    <rect x="1361" y="558" width="76" height="50" rx="8" fill="white" stroke="#dbe3ef"/>
+    <rect x="1449" y="558" width="76" height="50" rx="8" fill="white" stroke="#dbe3ef"/>
+    <text x="1399" y="579" text-anchor="middle" font-family="Segoe UI,Arial" font-size="7" fill="#64748b">Per laag</text>
+    <text x="1399" y="600" text-anchor="middle" font-family="Segoe UI,Arial" font-size="17" font-weight="750" fill="#0f172a">8</text>
+    <text x="1487" y="579" text-anchor="middle" font-family="Segoe UI,Arial" font-size="7" fill="#64748b">Lagen</text>
+    <text x="1487" y="600" text-anchor="middle" font-family="Segoe UI,Arial" font-size="17" font-weight="750" fill="#0f172a">6</text>
+    <rect x="1361" y="622" width="164" height="128" rx="10" fill="#f8fafc" stroke="#dbe3ef"/>
+    <g transform="translate(1418 690) scale(.34)">
+      <polygon points="-150,45 0,-35 175,45 25,120" fill="#dfb277" stroke="#8b5e34" stroke-width="3"/>
+      <g transform="translate(-82 -78)"><use href="#carton"/></g>
+      <g transform="translate(-17 -112)"><use href="#carton"/></g>
+      <g transform="translate(48 -146)"><use href="#carton"/></g>
+      <g transform="translate(-50 -139)"><use href="#carton"/></g>
+      <g transform="translate(15 -173)"><use href="#carton"/></g>
+    </g>
+    <rect x="1361" y="763" width="164" height="40" rx="9" fill="#f0fdf4" stroke="#bbf7d0"/>
+    <text x="1372" y="780" font-family="Segoe UI,Arial" font-size="8" font-weight="750" fill="#14532d">14 mm lager</text>
+    <text x="1514" y="793" text-anchor="end" font-family="Segoe UI,Arial" font-size="10" font-weight="750" fill="#15803d">+8 dozen</text>
+  </g>
+</svg>
