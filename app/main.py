@@ -6,22 +6,13 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel, Field
 
-from app.services.optimizer import (
-    CalculationInput,
-    OptimizationError,
-    calculate_with_advice,
-    list_pallets,
-)
+from app.services.optimizer import CalculationInput, OptimizationError, calculate_with_advice, list_pallets
 
 BASE_DIR = Path(__file__).resolve().parent
 VERSION_FILE = BASE_DIR.parent / "VERSION"
 APP_VERSION = VERSION_FILE.read_text(encoding="utf-8").strip()
 
-app = FastAPI(
-    title="Pallet Insight",
-    description="Lokale pallet- en verpakkingsoptimalisatie met 3D-preview.",
-    version=APP_VERSION,
-)
+app = FastAPI(title="Pallet Optimizer", description="Local pallet layout calculator.", version=APP_VERSION)
 app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
 templates = Jinja2Templates(directory=BASE_DIR / "templates")
 
@@ -32,6 +23,9 @@ class CalculationRequest(BaseModel):
     box_width_mm: int = Field(gt=0, le=5000)
     box_height_mm: int = Field(gt=0, le=5000)
     max_total_height_mm: int = Field(gt=0, le=10000)
+    custom_pallet_length_mm: int = Field(default=0, ge=0, le=10000)
+    custom_pallet_width_mm: int = Field(default=0, ge=0, le=10000)
+    custom_pallet_height_mm: int = Field(default=0, ge=0, le=2000)
     box_weight_kg: float = Field(default=0, ge=0, le=5000)
     max_load_kg: float = Field(default=1000, gt=0, le=100000)
     annual_box_volume: int = Field(default=0, ge=0, le=1_000_000_000)
@@ -42,11 +36,7 @@ class CalculationRequest(BaseModel):
 
 @app.get("/", response_class=HTMLResponse)
 def index(request: Request) -> HTMLResponse:
-    return templates.TemplateResponse(
-        request=request,
-        name="index.html",
-        context={"pallets": list_pallets()},
-    )
+    return templates.TemplateResponse(request=request, name="index.html", context={"pallets": list_pallets()})
 
 
 @app.get("/api/health")

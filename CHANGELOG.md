@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.9.0
+
+- Added Preset and Custom pallet modes.
+- Custom pallets accept length, width and pallet height in millimetres.
+- Box length, width and height inputs are wider so complete values remain visible.
+- Replaced text symbols with modern abstract SVG icons.
+- Boxes per layer now uses a clear grid icon.
+- Added Download result to export all six metrics and the pallet visualization as one PNG.
+- Added API and regression tests for custom pallet dimensions.
+
 ## 0.8.0
 
 - Replaced the Basic and Advanced dashboard with one compact English workspace.

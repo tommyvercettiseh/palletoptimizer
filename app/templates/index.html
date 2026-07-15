@@ -11,12 +11,13 @@
 <header class="topbar">
     <div class="topbar-inner">
         <a class="brand" href="/" aria-label="Pallet Optimizer home">
-            <span class="brand-icon" aria-hidden="true">
-                <svg viewBox="0 0 44 44"><path d="M22 3 39 12v20L22 41 5 32V12L22 3Zm0 5.2-11.8 6.3L22 20.8l11.8-6.3L22 8.2Zm-12 11v10L19.5 34V24.3L10 19.2Zm24 0-9.5 5.1V34L34 29.2v-10Z"/></svg>
-            </span>
+            <span class="brand-icon" aria-hidden="true"><svg viewBox="0 0 44 44"><path d="M22 3 39 12v20L22 41 5 32V12L22 3Zm0 5.2-11.8 6.3L22 20.8l11.8-6.3L22 8.2Zm-12 11v10L19.5 34V24.3L10 19.2Zm24 0-9.5 5.1V34L34 29.2v-10Z"/></svg></span>
             <span><strong>Pallet Optimizer</strong><small>Calculate a pallet layout in one clear view.</small></span>
         </a>
-        <span class="local-pill"><i></i> Local app</span>
+        <button id="downloadResult" class="download-button" type="button" disabled>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 5-5m-5 5-5-5M5 20h14"/></svg>
+            Download result
+        </button>
     </div>
 </header>
 
@@ -24,8 +25,16 @@
     <section class="panel input-panel">
         <header class="panel-heading"><span>INPUT</span></header>
         <form id="calculatorForm" novalidate>
-            <label class="field">
+            <div class="field">
                 <span>Pallet type</span>
+                <div class="segmented-control pallet-mode" role="group" aria-label="Preset or custom pallet">
+                    <button type="button" class="active" data-pallet-mode="preset">Preset</button>
+                    <button type="button" data-pallet-mode="custom">Custom</button>
+                </div>
+            </div>
+
+            <label class="field" id="presetPalletField">
+                <span>Preset pallet</span>
                 <select id="pallet_id" name="pallet_id">
                     {% for pallet in pallets %}
                     <option value="{{ pallet.id }}">{{ pallet.name }} ({{ pallet.length_mm }} × {{ pallet.width_mm }} × {{ pallet.height_mm }} mm)</option>
@@ -33,15 +42,27 @@
                 </select>
             </label>
 
-            <div class="dimension-grid" aria-label="Box dimensions">
-                <label class="field"><span>Length <b>(L)</b></span><div class="unit-input"><input id="box_length_mm" type="number" min="1" value="400" required><em>mm</em></div></label>
-                <label class="field"><span>Width <b>(W)</b></span><div class="unit-input"><input id="box_width_mm" type="number" min="1" value="300" required><em>mm</em></div></label>
-                <label class="field"><span>Height <b>(H)</b></span><div class="unit-input"><input id="box_height_mm" type="number" min="1" value="250" required><em>mm</em></div></label>
+            <div class="custom-pallet-grid" id="customPalletFields" hidden aria-label="Custom pallet dimensions">
+                <label class="field"><span>Length</span><div class="unit-input"><input id="custom_pallet_length_mm" type="number" min="1" value="1200"><em>mm</em></div></label>
+                <label class="field"><span>Width</span><div class="unit-input"><input id="custom_pallet_width_mm" type="number" min="1" value="800"><em>mm</em></div></label>
+                <label class="field"><span>Height</span><div class="unit-input"><input id="custom_pallet_height_mm" type="number" min="1" value="144"><em>mm</em></div></label>
             </div>
 
-            <div class="segmented-control" role="group" aria-label="Height includes pallet">
-                <button type="button" class="active" data-height-mode="inclusive">Include pallet</button>
-                <button type="button" data-height-mode="exclusive">Exclude pallet</button>
+            <div class="field-group">
+                <div class="group-title">Box dimensions <b>(L × W × H)</b></div>
+                <div class="dimension-grid" aria-label="Box dimensions">
+                    <label class="field"><span>Length <b>(L)</b></span><div class="unit-input"><input id="box_length_mm" type="number" min="1" value="400" required><em>mm</em></div></label>
+                    <label class="field"><span>Width <b>(W)</b></span><div class="unit-input"><input id="box_width_mm" type="number" min="1" value="300" required><em>mm</em></div></label>
+                    <label class="field"><span>Height <b>(H)</b></span><div class="unit-input"><input id="box_height_mm" type="number" min="1" value="250" required><em>mm</em></div></label>
+                </div>
+            </div>
+
+            <div class="field">
+                <span>Include pallet in height calculation</span>
+                <div class="segmented-control" role="group" aria-label="Height includes pallet">
+                    <button type="button" class="active" data-height-mode="inclusive">Include pallet</button>
+                    <button type="button" data-height-mode="exclusive">Exclude pallet</button>
+                </div>
             </div>
 
             <label class="field">
@@ -54,27 +75,20 @@
                 <div class="unit-input"><input id="case_quantity" type="number" min="1" value="12" required><em>items</em></div>
             </label>
 
-            <button class="primary-button" type="submit">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 3h16a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Zm1 4v4h4V7H5Zm6 0v4h8V7h-8ZM5 13v6h4v-6H5Zm6 0v6h8v-6h-8Z"/></svg>
-                Calculate pallet
-            </button>
+            <button class="primary-button" type="submit"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 3h16a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Zm1 4v4h4V7H5Zm6 0v4h8V7h-8ZM5 13v6h4v-6H5Zm6 0v6h8v-6h-8Z"/></svg>Calculate pallet</button>
             <div id="formError" class="error-message" hidden></div>
         </form>
     </section>
 
     <section class="panel result-panel" id="resultCard" aria-live="polite" tabindex="-1">
-        <header class="panel-heading result-heading">
-            <span>RESULT</span>
-            <small id="resultSubtitle">Euro pallet · 1200 × 800 × 144 mm</small>
-        </header>
-
+        <header class="panel-heading result-heading"><span>RESULT</span><small id="resultSubtitle">Europallet · 1200 × 800 × 144 mm</small></header>
         <div class="metric-grid">
-            <article><div class="metric-icon">▦</div><span>Boxes per layer</span><strong id="boxesPerLayer">8</strong></article>
-            <article><div class="metric-icon">▱</div><span>Number of layers</span><strong id="layers">6</strong></article>
-            <article><div class="metric-icon">□</div><span>Boxes per pallet</span><strong id="boxesPerPallet">48</strong></article>
-            <article><div class="metric-icon">▣</div><span>Case quantity</span><strong id="caseQuantityResult">12</strong></article>
-            <article><div class="metric-icon">▤</div><span>Pallet quantity</span><strong id="palletQuantity">576</strong></article>
-            <article><div class="metric-icon">↕</div><span>Total height</span><strong id="totalHeight">1,644 mm</strong></article>
+            <article><div class="metric-icon"><svg viewBox="0 0 32 32"><rect x="5" y="5" width="22" height="22" rx="2"/><path d="M12.3 5v22M19.7 5v22M5 12.3h22M5 19.7h22"/></svg></div><span>Boxes per layer</span><strong id="boxesPerLayer">8</strong></article>
+            <article><div class="metric-icon"><svg viewBox="0 0 32 32"><path d="m6 11 10-6 10 6-10 6-10-6Z"/><path d="m6 16 10 6 10-6M6 21l10 6 10-6"/></svg></div><span>Number of layers</span><strong id="layers">6</strong></article>
+            <article><div class="metric-icon"><svg viewBox="0 0 32 32"><path d="m7 10 9-5 9 5-9 5-9-5Z"/><path d="M7 10v12l9 5 9-5V10M16 15v12"/></svg></div><span>Boxes per pallet</span><strong id="boxesPerPallet">48</strong></article>
+            <article><div class="metric-icon"><svg viewBox="0 0 32 32"><path d="M8 9h16v18H8zM11 5h10v4H11z"/><path d="M12 15h8M12 20h8"/></svg></div><span>Case quantity</span><strong id="caseQuantityResult">12</strong></article>
+            <article><div class="metric-icon"><svg viewBox="0 0 32 32"><path d="M5 22h22v5H5zM8 18h16v4H8zM11 14h10v4H11z"/></svg></div><span>Pallet quantity</span><strong id="palletQuantity">576</strong></article>
+            <article><div class="metric-icon"><svg viewBox="0 0 32 32"><path d="M9 5h14M9 27h14M16 6v20M12 10l4-4 4 4M12 22l4 4 4-4"/></svg></div><span>Total height</span><strong id="totalHeight">1,644 mm</strong></article>
         </div>
 
         <section class="visual-card">
@@ -88,7 +102,6 @@
         </section>
     </section>
 </main>
-
 <script src="/static/app.js" defer></script>
 </body>
 </html>
