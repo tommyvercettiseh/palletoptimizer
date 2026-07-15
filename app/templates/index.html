@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="nl">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#2563eb">
+    <title>Pallet Insight</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <header class="topbar">
+        <div class="topbar-inner">
+            <a class="brand" href="/" aria-label="Pallet Insight startpagina">
+                <span class="brand-icon" aria-hidden="true">
+                    <svg viewBox="0 0 44 44"><path d="M22 3 39 12v20L22 41 5 32V12L22 3Zm0 5.2-11.8 6.3L22 20.8l11.8-6.3L22 8.2Zm-12 11v10L19.5 34V24.3L10 19.2Zm24 0-9.5 5.1V34L34 29.2v-10Z"/></svg>
+                </span>
+                <span>Pallet Insight</span>
+            </a>
+            <span class="local-pill"><i></i> Lokaal actief</span>
+        </div>
+    </header>
+
+    <main class="page-shell">
+        <section class="card input-card">
+            <div class="section-heading">
+                <span class="step">1</span>
+                <div>
+                    <h1>Bereken optimale opstelling</h1>
+                    <p>Vul de doosmaten en maximale pallethoogte in.</p>
+                </div>
+            </div>
+
+            <form id="calculatorForm" novalidate>
+                <label class="field pallet-field">
+                    <span>Pallettype</span>
+                    <select id="pallet_id" name="pallet_id">
+                        {% for pallet in pallets %}
+                        <option value="{{ pallet.id }}">{{ pallet.name }} ({{ pallet.length_mm }} × {{ pallet.width_mm }} × {{ pallet.height_mm }} mm)</option>
+                        {% endfor %}
+                    </select>
+                </label>
+
+                <div class="dimension-grid" aria-label="Doosafmetingen">
+                    <label class="field">
+                        <span>Lengte <b>(L)</b></span>
+                        <div class="unit-input"><input id="box_length_mm" name="box_length_mm" type="number" min="1" value="400" inputmode="numeric" required><em>mm</em></div>
+                    </label>
+                    <label class="field">
+                        <span>Breedte <b>(B)</b></span>
+                        <div class="unit-input"><input id="box_width_mm" name="box_width_mm" type="number" min="1" value="300" inputmode="numeric" required><em>mm</em></div>
+                    </label>
+                    <label class="field">
+                        <span>Hoogte <b>(H)</b></span>
+                        <div class="unit-input"><input id="box_height_mm" name="box_height_mm" type="number" min="1" value="250" inputmode="numeric" required><em>mm</em></div>
+                    </label>
+                </div>
+
+                <label class="field max-height-field">
+                    <span>Maximale pallethoogte <b>(inclusief pallet)</b></span>
+                    <div class="unit-input"><input id="max_total_height_mm" name="max_total_height_mm" type="number" min="145" value="1800" inputmode="numeric" required><em>mm</em></div>
+                </label>
+
+                <button class="primary-button" type="submit">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 3h16a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Zm1 4v4h4V7H5Zm6 0v4h8V7h-8ZM5 13v6h4v-6H5Zm6 0v6h8v-6h-8Z"/></svg>
+                    Bereken optimale layout
+                </button>
+                <div id="formError" class="error-message" hidden></div>
+            </form>
+        </section>
+
+        <section class="card result-card" id="resultCard" aria-live="polite">
+            <div class="section-heading result-heading">
+                <span class="step">2</span>
+                <div>
+                    <h2>Resultaat</h2>
+                    <p id="resultSubtitle">Europallet · optimale laagverdeling</p>
+                </div>
+            </div>
+
+            <div class="metrics">
+                <article><span>Dozen per laag</span><strong id="boxesPerLayer">8</strong></article>
+                <article><span>Aantal lagen</span><strong id="layers">6</strong></article>
+                <article><span>Totaal dozen</span><strong id="boxesPerPallet">48</strong></article>
+                <article><span>Pallethoogte</span><strong id="loadHeight">1.644 mm</strong></article>
+            </div>
+
+            <div class="visual-card">
+                <div class="visual-header">
+                    <div>
+                        <strong>Volle dozen op pallet</strong>
+                        <span id="layoutDescription">Vrije Tetris-indeling, ook met kleine uitsparingen wanneer dat meer dozen oplevert.</span>
+                    </div>
+                    <span id="utilizationBadge" class="badge">96,0% benut</span>
+                </div>
+                <div class="canvas-wrap">
+                    <canvas id="palletCanvas" width="1200" height="760" aria-label="3D-weergave van volle dozen op een Europallet"></canvas>
+                </div>
+            </div>
+
+            <details class="layer-details">
+                <summary>Bekijk Tetris-indeling van één laag</summary>
+                <div class="layer-content">
+                    <canvas id="layerCanvas" width="1200" height="620" aria-label="Bovenaanzicht van één palletlaag"></canvas>
+                    <div class="layer-stats">
+                        <span>Lengterichting <strong id="lengthwiseCount">–</strong></span>
+                        <span>Overdwars <strong id="crosswiseCount">–</strong></span>
+                    </div>
+                </div>
+            </details>
+
+            <section id="adviceSection" class="advice-card" hidden>
+                <span class="advice-icon" aria-hidden="true">↗</span>
+                <div>
+                    <strong id="adviceTitle">Optimalisatieadvies</strong>
+                    <p id="adviceText"></p>
+                </div>
+                <span id="adviceGain" class="advice-gain"></span>
+            </section>
+        </section>
+    </main>
+
+    <script src="/static/app.js" defer></script>
+</body>
+</html>
