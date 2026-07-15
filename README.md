@@ -1,12 +1,12 @@
 # Pallet Insight
 
-![Desktoppreview](docs/preview-desktop.png)
+![Desktoppreview](docs/preview-desktop.svg)
 
 Lokale Python-webapp die de maximale laagindeling voor gelijke dozen op een pallet zoekt. Iedere doos mag afzonderlijk 90 graden draaien. Daardoor ondersteunt de optimizer ook vrije Tetris-patronen met kleine ongebruikte ruimtes midden in de laag.
 
 ## Starten op Windows
 
-1. Pak de ZIP uit.
+1. Download of clone deze repository.
 2. Dubbelklik op **Start Pallet Insight.bat**.
 3. De launcher maakt automatisch een afgeschermde Python-omgeving en installeert de pakketten.
 4. De browser opent vanzelf op `http://127.0.0.1:8000`.
@@ -91,14 +91,4 @@ Voorbeeldrequest:
 
 ## Klaar voor latere uitbreiding
 
-De code is opgesplitst in een palletcatalogus, snelle layoutoptimizer, exacte packing solver, capaciteitsberekening en adviesmotor. Daardoor kunnen later onder andere deze onderdelen worden toegevoegd:
-
-* jaarvolume en kosten per pallet
-* besparing per millimeter kleinere doos
-* optimalisatie van lengte en breedte
-* CO2-besparing
-* gewichtslimieten
-* Excel-upload met meerdere artikelen
-* extra pallettypen
-* PDF-rapporten
-* accounts en opgeslagen berekeningen
+De code is opgesplitst in een palletcatalogus, snelle layoutoptimizer, exacte packing solver, capaciteitsberekening en adviesmotor. De eerstvolgende geplande functies staan in [ROADMAP.md](ROADMAP.md), waaronder oriëntatie-lock, PNG-export, stabiliteitsscore en gewichtslimieten.
