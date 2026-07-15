@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.7.0
+
+- Optionele hoogteweergave inclusief of exclusief pallet in Basic en Advanced.
+- Maximale hoogte, totale hoogte, ladinghoogte en pallethoogte worden apart weergegeven.
+- Optionele toggle voor void space en een transparante mogelijke extra laag.
+- Advanced bevat een void-spaceanalyse met maximale hoogte, huidige hoogte, vrije ruimte en benodigde reductie per doos.
+- Bedrijfsnamen op dooszijden blijven altijd rechtop leesbaar.
+- KPI-kaarten uitgebreid met vectorachtige raster-, lagen-, pallet- en hoogte-iconen.
+- Mobiele invoervelden voor lengte, breedte en hoogte tonen volledige waarden zoals 400, 300 en 250.
+- Automatische tests uitgebreid voor de nieuwe assets en bediening.
+
 ## 0.6.0
 
 - Nieuwe Basic- en Advanced-modus met één duidelijke schakelaar.
