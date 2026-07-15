@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.8.0
+
+- Replaced the Basic and Advanced dashboard with one compact English workspace.
+- Desktop keeps input on the left and all results on the right without page scrolling on a normal screen.
+- Input is limited to pallet type, box dimensions, height mode, maximum height and case quantity.
+- Results use six compact cards: boxes per layer, layers, boxes per pallet, case quantity, pallet quantity and total height.
+- Pallet visualization is smaller and no longer uses long height bars.
+- Pallet height, load height and total height are shown in one compact footer.
+- Removed company branding, void-space controls, contract analysis and PNG export from the interface.
+- Responsive mobile layout remains stacked and readable.
+
 ## 0.7.0
 
 - Optionele hoogteweergave inclusief of exclusief pallet in Basic en Advanced.
