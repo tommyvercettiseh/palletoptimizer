@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.9.1
+
+- Downloaded PNG files now use the selected box dimensions and maximum height, for example `box_350x250x100mm_maxheight_1900mm.png`.
+- Height values are shown without thousands separators, for example `1844 mm`.
+- Added a compact dynamic advice card below Calculate pallet.
+- Advice explains the minimum box height reduction needed to add one or more layers.
+- Existing version 0.9.0 layout and custom pallet workflow remain unchanged.
+
 ## 0.9.0
 
 - Added Preset and Custom pallet modes.
