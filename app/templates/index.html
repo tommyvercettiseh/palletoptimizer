@@ -7,27 +7,36 @@
     <title>Pallet Insight</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
-<body>
+<body class="mode-basic">
     <header class="topbar">
         <div class="topbar-inner">
             <a class="brand" href="/" aria-label="Pallet Insight startpagina">
                 <span class="brand-icon" aria-hidden="true">
                     <svg viewBox="0 0 44 44"><path d="M22 3 39 12v20L22 41 5 32V12L22 3Zm0 5.2-11.8 6.3L22 20.8l11.8-6.3L22 8.2Zm-12 11v10L19.5 34V24.3L10 19.2Zm24 0-9.5 5.1V34L34 29.2v-10Z"/></svg>
                 </span>
-                <span>Pallet Insight</span>
+                <span><strong>Pallet Insight</strong><small>Slimmer stapelen. Minder kosten.</small></span>
             </a>
+
+            <nav class="mode-switch" aria-label="Rekenmodus" role="tablist">
+                <button id="modeBasic" class="mode-button active" type="button" role="tab" aria-selected="true">Basic</button>
+                <button id="modeAdvanced" class="mode-button" type="button" role="tab" aria-selected="false">Advanced</button>
+            </nav>
+
             <span class="local-pill"><i></i> Lokaal actief</span>
         </div>
     </header>
 
     <main class="page-shell workspace-shell">
         <section class="card input-card">
-            <div class="section-heading">
-                <span class="step">1</span>
-                <div>
-                    <h1>Doosmaat invoeren</h1>
-                    <p>Vul de doosmaten en maximale pallethoogte in.</p>
-                </div>
+            <div class="mode-intro basic-only">
+                <span>Basic</span>
+                <strong>Snel berekenen.</strong>
+                <p>Alle essentiële palletgegevens op één scherm.</p>
+            </div>
+            <div class="mode-intro advanced-only">
+                <span>Advanced</span>
+                <strong>Diepgaande analyse.</strong>
+                <p>Bereken benutting, contractbesparing en exporteer een datasheet.</p>
             </div>
 
             <form id="calculatorForm" novalidate>
@@ -55,14 +64,53 @@
                     </label>
                 </div>
 
-                <label class="field max-height-field">
+                <label class="field">
                     <span>Maximale pallethoogte <b>(inclusief pallet)</b></span>
                     <div class="unit-input"><input id="max_total_height_mm" name="max_total_height_mm" type="number" min="145" value="1800" inputmode="numeric" required><em>mm</em></div>
                 </label>
 
+                <label class="field">
+                    <span>Case quantity <b>(stuks per doos)</b></span>
+                    <div class="unit-input"><input id="case_quantity" name="case_quantity" type="number" min="1" value="12" inputmode="numeric" required><em>stuks</em></div>
+                </label>
+
+                <label class="field">
+                    <span>Bedrijfsnaam op de dozen <b>(optioneel)</b></span>
+                    <div class="text-input"><input id="company_name" name="company_name" type="text" maxlength="32" value="Design Group" placeholder="Bijvoorbeeld Design Group" autocomplete="organization"></div>
+                </label>
+
+                <div class="advanced-fields advanced-only">
+                    <div class="advanced-divider"><span>Contract en logistiek</span></div>
+
+                    <label class="field">
+                        <span>Contractvolume <b>(artikelen)</b></span>
+                        <div class="unit-input"><input id="contract_volume_units" name="contract_volume_units" type="number" min="0" value="1000000" inputmode="numeric"><em>stuks</em></div>
+                    </label>
+
+                    <div class="two-field-grid">
+                        <label class="field">
+                            <span>Gewicht per doos</span>
+                            <div class="unit-input"><input id="box_weight_kg" name="box_weight_kg" type="number" min="0" step="0.1" value="8" inputmode="decimal"><em>kg</em></div>
+                        </label>
+                        <label class="field">
+                            <span>Max. palletgewicht</span>
+                            <div class="unit-input"><input id="max_load_kg" name="max_load_kg" type="number" min="1" step="1" value="1000" inputmode="decimal"><em>kg</em></div>
+                        </label>
+                    </div>
+
+                    <label class="field">
+                        <span>Logistieke kosten per pallet <b>(optioneel)</b></span>
+                        <div class="unit-input"><input id="cost_per_pallet_eur" name="cost_per_pallet_eur" type="number" min="0" step="0.01" value="85" inputmode="decimal"><em>€</em></div>
+                    </label>
+                </div>
+
                 <button class="primary-button" type="submit">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 3h16a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Zm1 4v4h4V7H5Zm6 0v4h8V7h-8ZM5 13v6h4v-6H5Zm6 0v6h8v-6h-8Z"/></svg>
-                    Bereken optimale layout
+                    Bereken pallet
+                </button>
+
+                <button id="downloadSnapshot" class="secondary-button advanced-only" type="button">
+                    <span aria-hidden="true">⇩</span> Download datasheet snapshot (PNG)
                 </button>
                 <div id="formError" class="error-message" hidden></div>
             </form>
@@ -72,49 +120,99 @@
             <div class="section-heading result-heading">
                 <span class="step">2</span>
                 <div>
-                    <h2>Resultaat</h2>
+                    <h1>Resultaat</h1>
                     <p id="resultSubtitle">Europallet · optimale laagverdeling</p>
                 </div>
             </div>
 
-            <div class="metrics">
-                <article><span>Dozen per laag</span><strong id="boxesPerLayer">8</strong></article>
-                <article><span>Aantal lagen</span><strong id="layers">6</strong></article>
-                <article><span>Totaal dozen</span><strong id="boxesPerPallet">48</strong></article>
-                <article><span>Pallethoogte</span><strong id="loadHeight">1.644 mm</strong></article>
+            <div class="metrics core-metrics">
+                <article><span>Dozen per laag</span><strong id="boxesPerLayer">8</strong><small>dozen</small></article>
+                <article><span>Aantal lagen</span><strong id="layers">6</strong><small>lagen</small></article>
+                <article><span>Dozen per pallet</span><strong id="boxesPerPallet">48</strong><small>dozen</small></article>
+                <article><span>Pallet quantity</span><strong id="palletQuantity">576</strong><small>artikelen</small></article>
+                <article><span>Pallethoogte</span><strong id="loadHeight">1.644 mm</strong><small>incl. pallet</small></article>
             </div>
 
             <div class="visual-card">
                 <div class="visual-header">
                     <div>
-                        <strong>Volle dozen op pallet</strong>
-                        <span id="layoutDescription">Vrije Tetris-indeling, ook met kleine uitsparingen wanneer dat meer dozen oplevert.</span>
+                        <strong>Volledige palletweergave</strong>
+                        <span id="layoutDescription">Vrije Tetris-indeling met gemengde draairichting.</span>
                     </div>
-                    <span id="utilizationBadge" class="badge">96,0% benut</span>
+                    <span id="layerBadge" class="badge">6 lagen</span>
                 </div>
                 <div class="canvas-wrap">
                     <canvas id="palletCanvas" width="1200" height="760" aria-label="3D-weergave van volle dozen op een Europallet"></canvas>
                 </div>
+                <div class="visual-footer">
+                    <span id="companyCaption">Bedrukking: Design Group</span>
+                    <span id="utilizationBadge">100,0% oppervlak benut</span>
+                </div>
             </div>
 
-            <details class="layer-details">
-                <summary>Bekijk Tetris-indeling van één laag</summary>
-                <div class="layer-content">
-                    <canvas id="layerCanvas" width="1200" height="620" aria-label="Bovenaanzicht van één palletlaag"></canvas>
-                    <div class="layer-stats">
-                        <span>Lengterichting <strong id="lengthwiseCount">–</strong></span>
-                        <span>Overdwars <strong id="crosswiseCount">–</strong></span>
+            <section class="advanced-dashboard advanced-only" aria-label="Geavanceerde resultaten">
+                <div class="advanced-section-heading">
+                    <div>
+                        <span>Advanced</span>
+                        <h2>Efficiëntie en contractbesparing</h2>
                     </div>
                 </div>
-            </details>
 
-            <section id="adviceSection" class="advice-card" hidden>
-                <span class="advice-icon" aria-hidden="true">↗</span>
-                <div>
-                    <strong id="adviceTitle">Optimalisatieadvies</strong>
-                    <p id="adviceText"></p>
+                <div class="efficiency-grid">
+                    <article><span>Surface used</span><strong id="surfaceUsed">100,0%</strong><small id="surfaceUsedDetail">960.000 / 960.000 mm²</small></article>
+                    <article><span>Volume used</span><strong id="volumeUsed">90,6%</strong><small id="volumeUsedDetail">1,440 / 1,590 m³</small></article>
+                    <article><span>Palletgewicht</span><strong id="payloadWeight">384 kg</strong><small id="payloadWeightDetail">van 1.000 kg maximaal</small></article>
+                    <article><span>Vrije hoogte</span><strong id="remainingHeight">156 mm</strong><small>tot maximale pallethoogte</small></article>
                 </div>
-                <span id="adviceGain" class="advice-gain"></span>
+
+                <div class="advanced-row">
+                    <section class="analysis-card savings-card">
+                        <div class="card-title"><span aria-hidden="true">▣</span><strong>Logistieke besparing</strong></div>
+                        <p id="contractSummary">Contractvolume: 1.000.000 artikelen · 83.334 dozen</p>
+                        <div class="scenario-grid">
+                            <article>
+                                <span>Huidige situatie</span>
+                                <strong id="currentPallets">1.737</strong>
+                                <small>pallets</small>
+                                <em id="currentCapacity">576 artikelen/pallet</em>
+                            </article>
+                            <div class="scenario-arrow">→</div>
+                            <article class="optimized">
+                                <span>Na optimalisatie</span>
+                                <strong id="optimizedPallets">1.489</strong>
+                                <small>pallets</small>
+                                <em id="optimizedCapacity">672 artikelen/pallet</em>
+                            </article>
+                        </div>
+                        <div class="saving-total">
+                            <span><strong id="palletsSaved">248</strong> pallets minder</span>
+                            <strong id="savingPct">14,3%</strong>
+                        </div>
+                        <div class="saving-cost" id="savingCost">Indicatieve logistieke besparing: € 21.080</div>
+                    </section>
+
+                    <section id="adviceSection" class="analysis-card advice-card">
+                        <div class="card-title"><span aria-hidden="true">↗</span><strong>Optimalisatieadvies</strong></div>
+                        <h3 id="adviceTitle">Verlaag elke doos met 14 mm om één extra laag toe te voegen.</h3>
+                        <p id="adviceText">Nieuwe dooshoogte: 236 mm. De palletcapaciteit stijgt van 48 naar 56 dozen.</p>
+                        <div class="advice-stats">
+                            <span>Nieuwe lagen <strong id="adviceLayers">7</strong></span>
+                            <span>Nieuwe pallet quantity <strong id="advicePalletQuantity">672</strong></span>
+                            <span>Capaciteitswinst <strong id="adviceGain">+16,7%</strong></span>
+                        </div>
+                    </section>
+                </div>
+
+                <details class="layer-details">
+                    <summary>Bekijk Tetris-indeling van één laag</summary>
+                    <div class="layer-content">
+                        <canvas id="layerCanvas" width="1200" height="620" aria-label="Bovenaanzicht van één palletlaag"></canvas>
+                        <div class="layer-stats">
+                            <span>Lengterichting <strong id="lengthwiseCount">–</strong></span>
+                            <span>Overdwars <strong id="crosswiseCount">–</strong></span>
+                        </div>
+                    </div>
+                </details>
             </section>
         </section>
     </main>

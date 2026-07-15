@@ -13,19 +13,26 @@ def test_homepage_loads():
     assert "palletCanvas" in response.text
 
 
-def test_homepage_uses_responsive_workspace():
+def test_homepage_has_basic_advanced_branding_and_download():
     response = client.get("/")
     stylesheet = client.get("/static/style.css")
+    javascript = client.get("/static/app.js")
 
     assert response.status_code == 200
     assert stylesheet.status_code == 200
-    assert 'class="page-shell workspace-shell"' in response.text
-    assert 'id="resultCard"' in response.text
-    assert "grid-template-columns: minmax(320px, 380px) minmax(0, 1fr)" in stylesheet.text
-    assert "@media (max-width: 999px)" in stylesheet.text
+    assert javascript.status_code == 200
+    assert 'id="modeBasic"' in response.text
+    assert 'id="modeAdvanced"' in response.text
+    assert 'id="company_name"' in response.text
+    assert 'id="downloadSnapshot"' in response.text
+    assert 'id="surfaceUsed"' in response.text
+    assert 'id="volumeUsed"' in response.text
+    assert "body.mode-basic .advanced-only" in stylesheet.text
+    assert "drawFaceLabel" in javascript.text
+    assert "Datasheet snapshot" in javascript.text
 
 
-def test_calculation_api_returns_advice():
+def test_calculation_api_returns_advice_and_utilization():
     response = client.post(
         "/api/calculate",
         json={
@@ -45,6 +52,11 @@ def test_calculation_api_returns_advice():
     data = response.json()
     assert data["boxes_per_pallet"] == 48
     assert data["height_advice"]["new_boxes_per_pallet"] == 56
+    assert data["used_area_mm2"] == 960000
+    assert data["pallet_area_mm2"] == 960000
+    assert data["volume_utilization_pct"] == 90.6
+    assert data["used_volume_mm3"] == 1_440_000_000
+    assert data["available_volume_mm3"] == 1_589_760_000
 
 
 def test_simple_api_request_uses_future_ready_defaults():
@@ -63,3 +75,10 @@ def test_simple_api_request_uses_future_ready_defaults():
     assert data["layout_strategy"] == "exact-tetris"
     assert data["orientation_counts"]["lengthwise"] > 0
     assert data["orientation_counts"]["crosswise"] > 0
+    assert 0 <= data["volume_utilization_pct"] <= 100
+
+
+def test_health_uses_repository_version():
+    response = client.get("/api/health")
+    assert response.status_code == 200
+    assert response.json() == {"status": "ok", "version": "0.6.0"}
