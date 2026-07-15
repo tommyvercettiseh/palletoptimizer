@@ -29,6 +29,9 @@ class CalculationInput:
     box_width_mm: int
     box_height_mm: int
     max_total_height_mm: int
+    custom_pallet_length_mm: int = 0
+    custom_pallet_width_mm: int = 0
+    custom_pallet_height_mm: int = 0
     box_weight_kg: float = 0
     max_load_kg: float = 1000
     annual_box_volume: int = 0
