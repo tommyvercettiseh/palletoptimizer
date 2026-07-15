@@ -74,6 +74,15 @@ def calculate_capacity(data: CalculationInput) -> dict[str, Any]:
         used_area_mm2 / pallet_area_mm2 * 100 if boxes_per_layer else 0
     )
 
+    box_volume_mm3 = data.box_length_mm * data.box_width_mm * data.box_height_mm
+    used_volume_mm3 = boxes_per_pallet * box_volume_mm3
+    available_volume_mm3 = pallet_area_mm2 * usable_height_mm
+    volume_utilization_pct = (
+        used_volume_mm3 / available_volume_mm3 * 100
+        if available_volume_mm3 > 0
+        else 0
+    )
+
     annual_pallets = (
         ceil(data.annual_box_volume / boxes_per_pallet)
         if data.annual_box_volume > 0 and boxes_per_pallet > 0
@@ -110,7 +119,13 @@ def calculate_capacity(data: CalculationInput) -> dict[str, Any]:
         "remaining_height_mm": remaining_height_mm,
         "usable_height_mm": usable_height_mm,
         "payload_weight_kg": round(payload_weight_kg, 2),
+        "used_area_mm2": used_area_mm2,
+        "pallet_area_mm2": pallet_area_mm2,
         "footprint_utilization_pct": round(footprint_utilization_pct, 1),
+        "box_volume_mm3": box_volume_mm3,
+        "used_volume_mm3": used_volume_mm3,
+        "available_volume_mm3": available_volume_mm3,
+        "volume_utilization_pct": round(volume_utilization_pct, 1),
         "annual_pallets": annual_pallets,
         "annual_transport_cost_eur": round(annual_transport_cost_eur, 2),
         "transport_cost_per_1000_boxes_eur": round(cost_per_1000_boxes_eur, 2),
