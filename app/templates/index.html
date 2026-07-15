@@ -6,6 +6,7 @@
     <meta name="theme-color" content="#2563eb">
     <title>Pallet Insight</title>
     <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/height-visualization.css">
 </head>
 <body class="mode-basic">
     <header class="topbar">
@@ -66,7 +67,7 @@
 
                 <label class="field">
                     <span>Maximale pallethoogte <b>(inclusief pallet)</b></span>
-                    <div class="unit-input"><input id="max_total_height_mm" name="max_total_height_mm" type="number" min="145" value="1800" inputmode="numeric" required><em>mm</em></div>
+                    <div class="unit-input"><input id="max_total_height_mm" name="max_total_height_mm" type="number" min="1" value="1800" inputmode="numeric" required><em>mm</em></div>
                 </label>
 
                 <label class="field">
@@ -170,24 +171,11 @@
                         <div class="card-title"><span aria-hidden="true">▣</span><strong>Logistieke besparing</strong></div>
                         <p id="contractSummary">Contractvolume: 1.000.000 artikelen · 83.334 dozen</p>
                         <div class="scenario-grid">
-                            <article>
-                                <span>Huidige situatie</span>
-                                <strong id="currentPallets">1.737</strong>
-                                <small>pallets</small>
-                                <em id="currentCapacity">576 artikelen/pallet</em>
-                            </article>
+                            <article><span>Huidige situatie</span><strong id="currentPallets">1.737</strong><small>pallets</small><em id="currentCapacity">576 artikelen/pallet</em></article>
                             <div class="scenario-arrow">→</div>
-                            <article class="optimized">
-                                <span>Na optimalisatie</span>
-                                <strong id="optimizedPallets">1.489</strong>
-                                <small>pallets</small>
-                                <em id="optimizedCapacity">672 artikelen/pallet</em>
-                            </article>
+                            <article class="optimized"><span>Na optimalisatie</span><strong id="optimizedPallets">1.489</strong><small>pallets</small><em id="optimizedCapacity">672 artikelen/pallet</em></article>
                         </div>
-                        <div class="saving-total">
-                            <span><strong id="palletsSaved">248</strong> pallets minder</span>
-                            <strong id="savingPct">14,3%</strong>
-                        </div>
+                        <div class="saving-total"><span><strong id="palletsSaved">248</strong> pallets minder</span><strong id="savingPct">14,3%</strong></div>
                         <div class="saving-cost" id="savingCost">Indicatieve logistieke besparing: € 21.080</div>
                     </section>
 
@@ -218,5 +206,6 @@
     </main>
 
     <script src="/static/app.js" defer></script>
+    <script src="/static/height-visualization.js" defer></script>
 </body>
 </html>
