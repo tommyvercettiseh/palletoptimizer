@@ -1,0 +1,1 @@
+"""Pallet Insight application package."""
