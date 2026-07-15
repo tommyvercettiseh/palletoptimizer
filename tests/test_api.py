@@ -6,43 +6,42 @@ from app.main import app
 client = TestClient(app)
 
 
-def test_homepage_loads():
-    response = client.get("/")
-    assert response.status_code == 200
-    assert "Pallet Insight" in response.text
-    assert "palletCanvas" in response.text
-
-
-def test_homepage_has_basic_advanced_branding_download_and_height_controls():
+def test_homepage_loads_compact_english_interface():
     response = client.get("/")
     stylesheet = client.get("/static/style.css")
     javascript = client.get("/static/app.js")
-    height_styles = client.get("/static/height-visualization.css")
-    height_javascript = client.get("/static/height-visualization.js")
 
     assert response.status_code == 200
     assert stylesheet.status_code == 200
     assert javascript.status_code == 200
-    assert height_styles.status_code == 200
-    assert height_javascript.status_code == 200
-    assert 'id="modeBasic"' in response.text
-    assert 'id="modeAdvanced"' in response.text
-    assert 'id="company_name"' in response.text
-    assert 'id="downloadSnapshot"' in response.text
-    assert 'id="surfaceUsed"' in response.text
-    assert 'id="volumeUsed"' in response.text
-    assert "height-visualization.css" in response.text
-    assert "height-visualization.js" in response.text
-    assert "body.mode-basic .advanced-only" in stylesheet.text
-    assert "drawFaceLabel" in javascript.text
-    assert "Datasheet snapshot" in javascript.text
-    assert "Toon vrije ruimte" in height_javascript.text
-    assert "data-height-mode" in height_javascript.text
-    assert "Mogelijke extra laag" in height_javascript.text
-    assert "void-analysis-card" in height_styles.text
+    assert "Pallet Optimizer" in response.text
+    assert 'lang="en"' in response.text
+    assert 'id="palletCanvas"' in response.text
+    assert 'data-height-mode="inclusive"' in response.text
+    assert 'data-height-mode="exclusive"' in response.text
+    assert 'id="case_quantity"' in response.text
+    assert 'id="boxesPerLayer"' in response.text
+    assert 'id="layers"' in response.text
+    assert 'id="boxesPerPallet"' in response.text
+    assert 'id="caseQuantityResult"' in response.text
+    assert 'id="palletQuantity"' in response.text
+    assert 'id="totalHeight"' in response.text
+    assert "grid-template-columns: repeat(3,minmax(0,1fr))" in stylesheet.text
+    assert "height: calc(100vh - 88px)" in stylesheet.text
+    assert "payload.max_total_height_mm" not in javascript.text
+    assert "heightMode === \"inclusive\"" in javascript.text
 
 
-def test_calculation_api_returns_advice_and_utilization():
+def test_removed_dashboard_features_are_not_loaded():
+    response = client.get("/")
+    assert 'id="modeAdvanced"' not in response.text
+    assert 'id="company_name"' not in response.text
+    assert 'id="downloadSnapshot"' not in response.text
+    assert "height-visualization.js" not in response.text
+    assert "height-visualization.css" not in response.text
+
+
+def test_calculation_api_returns_expected_capacity():
     response = client.post(
         "/api/calculate",
         json={
@@ -50,26 +49,18 @@ def test_calculation_api_returns_advice_and_utilization():
             "box_length_mm": 400,
             "box_width_mm": 300,
             "box_height_mm": 250,
-            "box_weight_kg": 8,
             "max_total_height_mm": 1800,
-            "max_load_kg": 1000,
-            "annual_box_volume": 100000,
-            "cost_per_pallet_eur": 85,
-            "max_height_reduction_mm": 20,
         },
     )
     assert response.status_code == 200
     data = response.json()
+    assert data["boxes_per_layer"] == 8
+    assert data["layers"] == 6
     assert data["boxes_per_pallet"] == 48
-    assert data["height_advice"]["new_boxes_per_pallet"] == 56
-    assert data["used_area_mm2"] == 960000
-    assert data["pallet_area_mm2"] == 960000
-    assert data["volume_utilization_pct"] == 90.6
-    assert data["used_volume_mm3"] == 1_440_000_000
-    assert data["available_volume_mm3"] == 1_589_760_000
+    assert data["load_height_mm"] == 1644
 
 
-def test_simple_api_request_uses_future_ready_defaults():
+def test_simple_api_request_uses_exact_tetris():
     response = client.post(
         "/api/calculate",
         json={
@@ -85,10 +76,9 @@ def test_simple_api_request_uses_future_ready_defaults():
     assert data["layout_strategy"] == "exact-tetris"
     assert data["orientation_counts"]["lengthwise"] > 0
     assert data["orientation_counts"]["crosswise"] > 0
-    assert 0 <= data["volume_utilization_pct"] <= 100
 
 
 def test_health_uses_repository_version():
     response = client.get("/api/health")
     assert response.status_code == 200
-    assert response.json() == {"status": "ok", "version": "0.7.0"}
+    assert response.json() == {"status": "ok", "version": "0.8.0"}
