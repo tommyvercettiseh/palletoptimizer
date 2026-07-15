@@ -88,6 +88,17 @@ async function calculate({ scrollToResult = true } = {}) {
     }
 }
 
+function updateAdvice(data) {
+    const advice = data.advice?.minimum_reduction_for_gain;
+    if (!advice || advice.new_layers <= data.layers) {
+        setText("heightAdviceText", "No practical box height reduction found for an extra layer.");
+        return;
+    }
+    const extraLayers = advice.new_layers - data.layers;
+    const layerText = extraLayers === 1 ? "one extra layer" : `${extraLayers} extra layers`;
+    setText("heightAdviceText", `Lower box height by ${advice.reduction_mm} mm to add ${layerText}.`);
+}
+
 function updateResult(data) {
     const caseQuantity = requiredNumber("case_quantity");
     const palletQuantity = data.boxes_per_pallet * caseQuantity;
@@ -97,11 +108,12 @@ function updateResult(data) {
     setText("boxesPerPallet", numberFormat.format(data.boxes_per_pallet));
     setText("caseQuantityResult", numberFormat.format(caseQuantity));
     setText("palletQuantity", numberFormat.format(palletQuantity));
-    setText("totalHeight", `${numberFormat.format(data.load_height_mm)} mm`);
-    setText("palletHeight", `${numberFormat.format(data.pallet.height_mm)} mm`);
-    setText("loadHeight", `${numberFormat.format(loadHeight)} mm`);
-    setText("heightSummaryTotal", `${numberFormat.format(data.load_height_mm)} mm`);
+    setText("totalHeight", `${data.load_height_mm} mm`);
+    setText("palletHeight", `${data.pallet.height_mm} mm`);
+    setText("loadHeight", `${loadHeight} mm`);
+    setText("heightSummaryTotal", `${data.load_height_mm} mm`);
     setText("resultSubtitle", `${data.pallet.name} · ${data.pallet.length_mm} × ${data.pallet.width_mm} × ${data.pallet.height_mm} mm`);
+    updateAdvice(data);
     drawPallet(data);
 }
 
@@ -154,6 +166,14 @@ function drawPallet(data) {
     for(let layer=0;layer<data.layers;layer+=1){const z=pallet.height_mm+layer*data.input.box_height_mm;sorted.forEach((box)=>cuboid(box.x_mm,box.y_mm,z,box.length_mm,box.width_mm,data.input.box_height_mm,{top:box.rotated?"#d8a15c":"#e0ad68",left:box.rotated?"#a76831":"#b47236",right:box.rotated?"#bd7b3e":"#c88748"},true));}
 }
 
+function downloadFilename() {
+    const length = requiredNumber("box_length_mm");
+    const width = requiredNumber("box_width_mm");
+    const height = requiredNumber("box_height_mm");
+    const maximumHeight = requiredNumber("max_total_height_mm");
+    return `box_${length}x${width}x${height}mm_maxheight_${maximumHeight}mm.png`;
+}
+
 function downloadResult() {
     if (!latestResult) return;
     const source = document.getElementById("palletCanvas");
@@ -162,7 +182,7 @@ function downloadResult() {
     const values = [
         ["Boxes per layer", data.boxes_per_layer], ["Number of layers", data.layers],
         ["Boxes per pallet", data.boxes_per_pallet], ["Case quantity", caseQuantity],
-        ["Pallet quantity", data.boxes_per_pallet * caseQuantity], ["Total height", `${numberFormat.format(data.load_height_mm)} mm`],
+        ["Pallet quantity", data.boxes_per_pallet * caseQuantity], ["Total height", `${data.load_height_mm} mm`],
     ];
     const canvas = document.createElement("canvas"); canvas.width = 1600; canvas.height = 1000;
     const ctx = canvas.getContext("2d"); ctx.fillStyle="#f6f8fc"; ctx.fillRect(0,0,1600,1000);
@@ -170,7 +190,7 @@ function downloadResult() {
     ctx.fillStyle="#0f172a"; ctx.font="700 18px Arial"; ctx.fillText(`${data.pallet.name} · ${data.pallet.length_mm} × ${data.pallet.width_mm} × ${data.pallet.height_mm} mm`,55,130);
     values.forEach(([label,value],index)=>{const col=index%3,row=Math.floor(index/3),x=55+col*500,y=165+row*125;ctx.fillStyle="#fff";ctx.strokeStyle="#dbe3ef";ctx.lineWidth=2;ctx.beginPath();ctx.roundRect(x,y,470,100,16);ctx.fill();ctx.stroke();ctx.fillStyle="#64748b";ctx.font="700 16px Arial";ctx.fillText(label,x+24,y+32);ctx.fillStyle="#0f172a";ctx.font="800 30px Arial";ctx.fillText(String(value),x+24,y+73);});
     ctx.fillStyle="#fff";ctx.strokeStyle="#dbe3ef";ctx.beginPath();ctx.roundRect(55,430,1490,500,18);ctx.fill();ctx.stroke();ctx.drawImage(source,0,0,source.width,source.height,180,460,1240,420);
-    canvas.toBlob((blob)=>{if(!blob)return;const url=URL.createObjectURL(blob),link=document.createElement("a");link.href=url;link.download="pallet-result.png";link.click();URL.revokeObjectURL(url);},"image/png");
+    canvas.toBlob((blob)=>{if(!blob)return;const url=URL.createObjectURL(blob),link=document.createElement("a");link.href=url;link.download=downloadFilename();link.click();URL.revokeObjectURL(url);},"image/png");
 }
 
 document.querySelectorAll("[data-height-mode]").forEach((button)=>button.addEventListener("click",()=>setHeightMode(button.dataset.heightMode)));
